@@ -3,6 +3,7 @@ import { Box, Stack, Skeleton } from "@chakra-ui/react";
 import { useGetTodosQuery } from "@/services/todoService";
 import { Heading } from "@chakra-ui/react";
 import TododsTable from "./TodosTable";
+import EditModal from "./EditModal";
 
 export default function Home() {
   const { data: todosList, isLoading: todosLoading } = useGetTodosQuery();
