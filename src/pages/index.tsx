@@ -1,28 +1,11 @@
 import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
-import { Box } from "@chakra-ui/react";
+import { Box, Stack, Skeleton } from "@chakra-ui/react";
 import { useGetTodosQuery } from "@/services/todoService";
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-  Heading,
-  Tag,
-  TagLabel,
-} from "@chakra-ui/react";
-
-const inter = Inter({ subsets: ["latin"] });
+import { Heading } from "@chakra-ui/react";
+import TododsTable from "./TodosTable";
 
 export default function Home() {
-  const { data: todosList } = useGetTodosQuery();
+  const { data: todosList, isLoading: todosLoading } = useGetTodosQuery();
   return (
     <>
       <Head>
@@ -43,37 +26,14 @@ export default function Home() {
         <Heading as="h6" size="xs">
           Todos Table
         </Heading>
-        <TableContainer>
-          <Table variant="striped">
-            <Thead>
-              <Tr>
-                <Th>id</Th>
-                <Th>title</Th>
-                <Th>description</Th>
-                <Th>status</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {todosList?.map((todo) => {
-                return (
-                  <Tr key={todo.id}>
-                    <Td>{todo.id}</Td>
-                    <Td>{todo.title}</Td>
-                    <Td>{todo.description}</Td>
-                    <Td>
-                      <Tag
-                        variant="outline"
-                        colorScheme={todo.done ? "green" : "red"}
-                      >
-                        <TagLabel>{todo.done ? "done" : "not done"}</TagLabel>
-                      </Tag>
-                    </Td>
-                  </Tr>
-                );
-              })}
-            </Tbody>
-          </Table>
-        </TableContainer>
+        {todosList && <TododsTable todosList={todosList} />}
+        {todosLoading && (
+          <Stack>
+            <Skeleton height="40px" />
+            <Skeleton height="40px" />
+            <Skeleton height="40px" />
+          </Stack>
+        )}
       </Box>
     </>
   );
