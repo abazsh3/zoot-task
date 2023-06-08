@@ -1,6 +1,7 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { Todo } from "./types";
+import { url } from "inspector";
 
 export const todoApi = createApi({
   reducerPath: "todoApi",
@@ -11,7 +12,11 @@ export const todoApi = createApi({
       query: () => "/todos",
       providesTags: ["get-todos"],
     }),
+    deleteTodo: builder.mutation<unknown, number>({
+      query: (id) => ({ url: `/todos/${id}`, method: "DELETE" }),
+      invalidatesTags: ["get-todos"],
+    }),
   }),
 });
 
-export const { useGetTodosQuery } = todoApi;
+export const { useGetTodosQuery, useDeleteTodoMutation } = todoApi;
